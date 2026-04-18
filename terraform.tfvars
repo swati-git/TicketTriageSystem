@@ -1,1 +1,1 @@
-region = "southindia" 
+region = "eastus" 
