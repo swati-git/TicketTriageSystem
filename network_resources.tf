@@ -15,4 +15,12 @@ resource "azurerm_subnet" "triage_subnet" {
     "Microsoft.CognitiveServices", # OpenAI (embeddings + GPT-4o)
     "Microsoft.KeyVault"           # Key Vault (secrets)
   ]
+
+   delegation {
+    name = "container-app-delegation"
+    service_delegation {
+      name    = "Microsoft.App/environments"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+    }
+   }
 }
