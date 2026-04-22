@@ -5,5 +5,9 @@ description = "A ticket triaging system that uses agents to triage tickets"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "azure-ai-inference>=1.0.0b6",
+    "azure-ai-projects>=1.0.0b11",
+    "openai>=2.31.0",
+    "pytest>=9.0.3",
     "python-dotenv>=1.2.2",
 ]
