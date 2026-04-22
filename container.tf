@@ -17,6 +17,7 @@ resource "azurerm_container_app_environment" "triage_container_env" {
 
 }
 
+
 # The Container App Job
 resource "azurerm_container_app_job" "triage_container_app_job" {
   name                         = "container-app-job-${var.region}-triage"
@@ -25,7 +26,6 @@ resource "azurerm_container_app_job" "triage_container_app_job" {
   container_app_environment_id = azurerm_container_app_environment.triage_container_env.id
   depends_on = [azurerm_resource_provider_registration.app] 
 
-  # Managed identity so it can auth to cognitive account via DefaultAzureCredential
   identity {
     type = "SystemAssigned"
   }
@@ -51,8 +51,6 @@ resource "azurerm_container_app_job" "triage_container_app_job" {
     password_secret_name = "acr-password"   # must match secret name above exactly
   }
 
-
-
   template {
     container {
       name   = "test-runner"
@@ -73,8 +71,7 @@ resource "azurerm_container_app_job" "triage_container_app_job" {
   }
 }
 
-# Give the job's managed identity access to the cognitive account
-resource "azurerm_role_assignment" "test_runner_cognitive_user" {
+resource "azurerm_role_assignment" "cognitive_user" {
   scope                = azurerm_cognitive_account.triage_account.id
   role_definition_name = "Cognitive Services OpenAI User"
   principal_id         = azurerm_container_app_job.triage_container_app_job.identity[0].principal_id
@@ -83,3 +80,5 @@ resource "azurerm_role_assignment" "test_runner_cognitive_user" {
 resource "azurerm_resource_provider_registration" "app" {
   name = "Microsoft.App"
 }
+
+
