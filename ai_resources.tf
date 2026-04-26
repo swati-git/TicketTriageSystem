@@ -12,13 +12,10 @@ resource "azurerm_cognitive_account" "triage_account" {
 
   custom_subdomain_name =  "ticket-triage-system"
 
-  network_acls {
-    default_action = "Deny"
-    virtual_network_rules {
-      subnet_id = azurerm_subnet.triage_subnet.id
-    }
-  }
+  public_network_access_enabled = false
+  rai_policy_name      = azurerm_cognitive_account_rai_policy.ai_safety.name
 
+  
 } 
 
 resource "azurerm_cognitive_account_project" "triage_project" {
@@ -31,7 +28,6 @@ resource "azurerm_cognitive_account_project" "triage_project" {
   identity {
     type = "SystemAssigned"
   }
-
 
 }
 
